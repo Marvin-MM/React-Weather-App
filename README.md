@@ -1,4 +1,4 @@
-# React Weather App 🔥🔥
+# React Weather App
 
 This project is a comprehensive weather application built using modern web technologies.
 
@@ -16,7 +16,7 @@ This project is a comprehensive weather application built using modern web techn
 To get started with this project, clone the repository and install the dependencies:
 
 ```sh
-git clone https://github.com/your-username/react-weather-app.git
+git clone https://github.com/Marvin-MM/React-Weather-App.git
 cd react-weather-app
 npm install
 ```
