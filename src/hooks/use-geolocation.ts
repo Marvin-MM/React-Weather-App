@@ -42,11 +42,14 @@ export function useGeolocation() {
       // **Request location**
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const newCoordinates = {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          };
+          // Save to localStorage
+          localStorage.setItem('cachedLocation', JSON.stringify(newCoordinates));
           setLocationData({
-            coordinates: {
-              lat: position.coords.latitude,
-              lon: position.coords.longitude,
-            },
+            coordinates: newCoordinates,
             error: null,
             isLoading: false,
           });
@@ -62,11 +65,14 @@ export function useGeolocation() {
               // Retry with lower accuracy
               navigator.geolocation.getCurrentPosition(
                 (pos) => {
+                  const newCoordinates = {
+                    lat: pos.coords.latitude,
+                    lon: pos.coords.longitude,
+                  };
+                  // Save to localStorage
+                  localStorage.setItem('cachedLocation', JSON.stringify(newCoordinates));
                   setLocationData({
-                    coordinates: {
-                      lat: pos.coords.latitude,
-                      lon: pos.coords.longitude,
-                    },
+                    coordinates: newCoordinates,
                     error: null,
                     isLoading: false,
                   });
@@ -109,9 +115,18 @@ export function useGeolocation() {
     }
   };
 
-  // **Delay initial request until user clicks**
+  // **Check for cached location on initial load**
   useEffect(() => {
-    getLocation();
+    const cachedLocation = localStorage.getItem('cachedLocation');
+    if (cachedLocation) {
+      setLocationData({
+        coordinates: JSON.parse(cachedLocation),
+        error: null,
+        isLoading: false,
+      });
+    } else {
+      getLocation();
+    }
   }, []);
 
   return {
